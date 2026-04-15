@@ -1,0 +1,10 @@
+# SynboxProxy Configuration
+
+# API Key for authentication
+api_key: ""
+
+# Organization identifier
+organization: ""
+
+# Refresh interval in seconds
+refresh_interval: 300

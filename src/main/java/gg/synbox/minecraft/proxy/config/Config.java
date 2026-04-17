@@ -18,7 +18,7 @@ public class Config {
     private String apiKey;
     private String organization;
     private int refreshInterval;
-    private int port;
+    private int webserverPort;
 
     public Config(Path dataDirectory, Logger logger) {
         this.dataDirectory = dataDirectory;
@@ -44,7 +44,7 @@ public class Config {
                 this.apiKey = (String) data.getOrDefault("api_key", null);
                 this.organization = (String) data.getOrDefault("organization", null);
                 this.refreshInterval = (Integer) data.getOrDefault("refresh_interval", 300);
-                this.port = (Integer) data.getOrDefault("port", 25657);
+                this.webserverPort = (Integer) data.getOrDefault("webserverPort", 8084);
             }
             
             logger.info("Config loaded successfully");
@@ -64,8 +64,8 @@ public class Config {
         }
     }
 
-    public int getPort() {
-        return port;
+    public int getWebserverPort() {
+        return webserverPort;
     }
 
     public String getApiKey() {

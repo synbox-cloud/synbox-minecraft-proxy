@@ -25,7 +25,6 @@ public class SynboxProxy {
 
     private final Config config;
     private final ProxyServer server;
-    private final Javalin app;
     private static SynboxProxy instance;
     private static ApiFacade synboxAPI;
 
@@ -39,15 +38,14 @@ public class SynboxProxy {
 
         WebServerHandler webServerHandler = new WebServerHandler(logger, this);
 
-        this.app = Javalin.create(config -> {
+        Javalin.create(config -> {
             config.routes.post("/{serverId}", ctx -> {
                 ctx.future(() -> webServerHandler.handleWebhook(ctx));
             });
             config.routes.post("/magicLink/{uuid}", ctx -> {
                 ctx.future(() -> webServerHandler.handleMagicLink(ctx));
             });
-        }).start("0.0.0.0",config.getPort());
-
+        }).start("0.0.0.0", config.getWebserverPort());
 
         if(config.getApiKey() == null) {
             logger.error("API Key ist nicht in der config.yml gesetzt! Bitte setze den API Key und starte den Proxy neu.");

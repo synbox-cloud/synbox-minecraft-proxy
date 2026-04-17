@@ -8,3 +8,6 @@ organization: ""
 
 # Refresh interval in seconds
 refresh_interval: 300
+
+# webserver port
+webserverPort: 8084

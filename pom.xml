@@ -101,4 +101,10 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>synbox</id>
+            <url>https://registryhub.synbox.gg/repository/synbox/</url>
+        </repository>
+    </distributionManagement>
 </project>

@@ -41,13 +41,13 @@ public class WebServerHandler {
                 // Event direkt feuern basierend auf Event-Typ
                 switch (webhookEvent.event()) {
                     case "SERVER_START" ->
-                            server.getServer().getEventManager().fire(new SynboxServerStartEvent(
+                            server.getServer().getEventManager().fireAndForget(new SynboxServerStartEvent(
                                     serverId, webhookEvent.displayName(), webhookEvent.eventId()));
                     case "SERVER_STOP" ->
-                            server.getServer().getEventManager().fire(new SynboxServerStopEvent(
+                            server.getServer().getEventManager().fireAndForget(new SynboxServerStopEvent(
                                     serverId, webhookEvent.displayName(), webhookEvent.eventId()));
                     case "SERVER_KILL" ->
-                            server.getServer().getEventManager().fire(new SynboxServerKillEvent(
+                            server.getServer().getEventManager().fireAndForget(new SynboxServerKillEvent(
                                     serverId, webhookEvent.displayName(), webhookEvent.eventId()));
                     default ->
                             logger.warn("Unbekannter Event-Typ: {} für Server {}", webhookEvent.event(), serverId);

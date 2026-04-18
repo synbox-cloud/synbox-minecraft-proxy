@@ -36,8 +36,7 @@ public class SynUtils {
     public static void unregisterServer(CloudServerDTO serverDTO) {
         if(serverDTO.getIp() == null)return;
         if(serverDTO.getPort() == null)return;
-        InetSocketAddress address = new InetSocketAddress(serverDTO.getIp(), serverDTO.getPort());
-        unregisterAllServersWithEqualAddress(address);
+        unregisterAllServersWithEqualAddress(new InetSocketAddress(serverDTO.getIp(), serverDTO.getPort()));
     }
 
     private static void unregisterAllServersWithEqualAddress(InetSocketAddress address) {
@@ -46,6 +45,7 @@ public class SynUtils {
                 .getAllServers().stream().filter(t -> isSameAddress(t.getServerInfo().getAddress(), address))
                 .filter(t -> !serverIds.contains(t.getServerInfo().getName()))
                 .forEach(s -> {
+                    System.out.println(s.getServerInfo().getName() + " unregistered!");
                     SynboxProxy.getInstance().getServer().unregisterServer(s.getServerInfo());
                     serverIds.remove(s.getServerInfo().getName());
                 });

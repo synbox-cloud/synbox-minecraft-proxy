@@ -85,6 +85,10 @@ public class SynboxProxy {
         return synboxAPI;
     }
 
+    public Config getConfig() {
+        return config;
+    }
+
     public ProxyServer getServer() {
         return server;
     }

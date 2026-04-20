@@ -68,12 +68,7 @@ public class SynboxProxy {
         }
         getServer().getScheduler().buildTask(this, () -> {
             try {
-                synboxAPI.serverManagement()
-                        .getContainers()
-                        .stream()
-                        .filter(t -> t.getOrganization() != null && t.getOrganization().equalsIgnoreCase(config.getOrganization()))
-                        .filter(t -> t.getMetrics() != null)
-                        .forEach(SynUtils::registerServer);
+                SynUtils.getAllServersFromOrganization().stream().filter(t -> t.getMetrics() != null).forEach(SynUtils::registerServer);
                 logger.info("Server aktualisiert!");
             } catch (Exception e) {
                 logger.error("Fehler beim Verbinden mit der Synbox API: {}", e.getMessage());

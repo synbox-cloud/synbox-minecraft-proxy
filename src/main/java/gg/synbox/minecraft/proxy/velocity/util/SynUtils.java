@@ -1,7 +1,9 @@
 package gg.synbox.minecraft.proxy.velocity.util;
 
 import com.velocitypowered.api.proxy.server.ServerInfo;
+import de.synbox.invoker.ApiException;
 import de.synbox.model.CloudServerDTO;
+import de.synbox.model.ContainerFilter;
 import gg.synbox.minecraft.proxy.SynboxProxy;
 import org.bson.Document;
 
@@ -55,5 +57,21 @@ public class SynUtils {
         return address1.getAddress().equals(address2.getAddress()) && address1.getPort() == address2.getPort();
     }
 
+    public static List<CloudServerDTO> getServersFromOrganization(String accountId) throws ApiException {
+        return SynboxProxy.getSynboxAPI().serverManagement()
+                .getContainers(List.of(ContainerFilter.ORGANIZATION))
+                .stream()
+                .filter(t -> accountId.equals(t.getAccountId()))
+                .filter(t -> SynboxProxy.getInstance().getConfig().getOrganization().equals(t.getOrganization()))
+                .toList();
+    }
+
+    public static List<CloudServerDTO> getAllServersFromOrganization() throws ApiException {
+        return SynboxProxy.getSynboxAPI().serverManagement()
+                .getContainers(List.of(ContainerFilter.ORGANIZATION))
+                .stream()
+                .filter(t -> SynboxProxy.getInstance().getConfig().getOrganization().equals(t.getOrganization()))
+                .toList();
+    }
 
 }

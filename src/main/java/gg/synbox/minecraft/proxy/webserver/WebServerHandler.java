@@ -14,6 +14,8 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bson.Document;
 import org.slf4j.Logger;
 
+import java.net.URI;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -67,7 +69,16 @@ public class WebServerHandler {
                 String uuid = ctx.pathParam("uuid");
                 Document body = Document.parse(ctx.body());
                 String link = body.getString("magicLink");
-                var event = new SynboxMagicLinkEvent(false,body.getString("magicToken"), link, UUID.fromString(uuid));
+                URI uri = new URI(link);
+
+                String token = Arrays.stream(uri.getQuery().split("&"))
+                        .map(s -> s.split("="))
+                        .filter(arr -> arr[0].equals("token"))
+                        .map(arr -> arr[1])
+                        .findFirst()
+                        .orElse(null);
+
+                var event = new SynboxMagicLinkEvent(false, token, link, UUID.fromString(uuid));
                 SynboxProxy.getInstance().getServer().getEventManager().fire(event).thenAccept(result -> {
                     if(result.isSendDefaultMessage()) {
                         server.getServer().getPlayer(UUID.fromString(uuid)).ifPresent(player -> {

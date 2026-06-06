@@ -5,6 +5,7 @@ import de.synbox.invoker.ApiException;
 import de.synbox.model.CloudServerDTO;
 import de.synbox.model.ContainerFilter;
 import gg.synbox.minecraft.proxy.SynboxProxy;
+import gg.synbox.minecraft.proxy.velocity.listener.ServerEventListener;
 import org.bson.Document;
 
 import java.net.InetSocketAddress;
@@ -20,7 +21,7 @@ public class SynUtils {
         if(serverDTO.getEnvs() == null)return;
         if(serverDTO.getIp() == null)return;
         if(serverDTO.getPort() == null)return;
-
+        ServerEventListener.serverMap.put(serverDTO.getServerId(), serverDTO);
         Document document = Document.parse(serverDTO.getEnvs().toJson());
         String serverName = document.getOrDefault("SERVER_NAME", serverDTO.getServerId()).toString();
         serverIds.add(serverDTO.getServerId());

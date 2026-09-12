@@ -6,11 +6,12 @@ import de.synbox.model.CloudServerDTO;
 import de.synbox.model.ContainerFilter;
 import gg.synbox.minecraft.proxy.SynboxProxy;
 import gg.synbox.minecraft.proxy.velocity.listener.ServerEventListener;
-import org.bson.Document;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SynUtils {
 
@@ -22,7 +23,7 @@ public class SynUtils {
         if(serverDTO.getIp() == null)return;
         if(serverDTO.getPort() == null)return;
         ServerEventListener.serverMap.put(serverDTO.getServerId(), serverDTO);
-        Document document = Document.parse(serverDTO.getEnvs().toJson());
+        Map<String, Object> document = new HashMap<>(serverDTO.getEnvs());
         String serverName = document.getOrDefault("SERVER_NAME", serverDTO.getServerId()).toString();
         serverIds.add(serverDTO.getServerId());
         InetSocketAddress address = new InetSocketAddress(serverDTO.getIp(), serverDTO.getPort());

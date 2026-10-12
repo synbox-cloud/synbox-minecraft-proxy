@@ -61,7 +61,7 @@ public class SynUtils {
 
     public static List<CloudServerDTO> getServersFromOrganization(String accountId) throws ApiException {
         return SynboxProxy.getSynboxAPI().serverManagement()
-                .getContainers(List.of(ContainerFilter.ORGANIZATION))
+                .getContainers(List.of(ContainerFilter.ORGANIZATION), null)
                 .stream()
                 .filter(t -> accountId.equals(t.getAccountId()))
                 .filter(t -> SynboxProxy.getInstance().getConfig().getOrganization().equals(t.getOrganization()))
@@ -70,7 +70,7 @@ public class SynUtils {
 
     public static List<CloudServerDTO> getAllServersFromOrganization() throws ApiException {
         return SynboxProxy.getSynboxAPI().serverManagement()
-                .getContainers(List.of(ContainerFilter.ORGANIZATION))
+                .getContainers(List.of(ContainerFilter.ORGANIZATION), null)
                 .stream()
                 .filter(t -> SynboxProxy.getInstance().getConfig().getOrganization().equals(t.getOrganization()))
                 .toList();

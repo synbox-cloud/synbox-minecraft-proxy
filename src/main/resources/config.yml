@@ -6,6 +6,9 @@ api_key: ""
 # Organization identifier
 organization: ""
 
+# Register servers in velocity
+register_server: true
+
 # Refresh interval in seconds
 refresh_interval: 300
 

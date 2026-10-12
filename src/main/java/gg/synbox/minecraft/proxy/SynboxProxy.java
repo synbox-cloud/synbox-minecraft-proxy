@@ -58,22 +58,24 @@ public class SynboxProxy {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        getServer().getEventManager().register(this, new ServerEventListener());
-
         try {
             UserDTO userDTO = synboxAPI.userManagement().getUserInformation();
             logger.info("Erfolgreich mit der Synbox API verbunden! Angemeldeter Benutzer: {}", userDTO.getUserid());
         } catch (Exception e) {
             logger.error("Fehler beim Verbinden mit der Synbox API: {}", e.getMessage());
         }
-        getServer().getScheduler().buildTask(this, () -> {
-            try {
-                SynUtils.getAllServersFromOrganization().stream().filter(t -> t.getMetrics() != null).forEach(SynUtils::registerServer);
-                logger.info("Server aktualisiert!");
-            } catch (Exception e) {
-                logger.error("Fehler beim Verbinden mit der Synbox API: {}", e.getMessage());
-            }
-        }).repeat(Duration.ofSeconds(config.getRefreshInterval())).schedule();
+
+        if (getConfig().isRegisterServers()) {
+            getServer().getEventManager().register(this, new ServerEventListener());
+            getServer().getScheduler().buildTask(this, () -> {
+                try {
+                    SynUtils.getAllServersFromOrganization().stream().filter(t -> t.getMetrics() != null).forEach(SynUtils::registerServer);
+                    logger.info("Server aktualisiert!");
+                } catch (Exception e) {
+                    logger.error("Fehler beim Verbinden mit der Synbox API: {}", e.getMessage());
+                }
+            }).repeat(Duration.ofSeconds(config.getRefreshInterval())).schedule();
+        }
     }
 
     public static ApiFacade getSynboxAPI() {

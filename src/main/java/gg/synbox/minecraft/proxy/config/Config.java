@@ -1,6 +1,5 @@
 package gg.synbox.minecraft.proxy.config;
 
-import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
@@ -17,6 +16,7 @@ public class Config {
 
     private String apiKey;
     private String organization;
+    private boolean registerServers;
     private int refreshInterval;
     private int webserverPort;
 
@@ -43,6 +43,7 @@ public class Config {
                 
                 this.apiKey = (String) data.getOrDefault("api_key", null);
                 this.organization = (String) data.getOrDefault("organization", null);
+                this.registerServers = (boolean) data.getOrDefault("register_servers", true);
                 this.refreshInterval = (Integer) data.getOrDefault("refresh_interval", 300);
                 this.webserverPort = (Integer) data.getOrDefault("webserverPort", 8084);
             }
@@ -70,6 +71,10 @@ public class Config {
 
     public String getApiKey() {
         return apiKey;
+    }
+
+    public boolean isRegisterServers() {
+        return registerServers;
     }
 
     public String getOrganization() {
